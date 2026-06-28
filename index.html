@@ -35,9 +35,10 @@
             padding: 20px;
             width: 100%;
             max-width: 600px;
+            z-index: 20;
         }
 
-        /* Título Principal Cyber Bane */
+        /* Título Principal Cyber Bane con Glitch */
         .logo-title {
             font-size: 3.5rem;
             font-weight: bold;
@@ -56,14 +57,32 @@
             font-size: 0.9rem;
             color: #00d2ff;
             letter-spacing: 2px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             text-transform: uppercase;
             opacity: 0.8;
         }
 
+        /* Contenedor de la Imagen con Efecto 3D Dinámico */
+        .image-3d-container {
+            width: 100%;
+            max-width: 280px; 
+            margin: 0 auto 30px auto;
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out;
+            filter: drop-shadow(0 0 15px rgba(0, 210, 255, 0.4));
+        }
+
+        .image-3d-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 210, 255, 0.2);
+        }
+
         /* Contenedor del Efecto de Escritura en Vivo */
         .typing-container {
-            min-height: 55px; /* Evita saltos de línea bruscos en el layout */
+            min-height: 55px;
             margin-bottom: 40px;
             padding: 0 10px;
         }
@@ -89,37 +108,7 @@
             box-shadow: 0 0 8px #ff003c;
         }
 
-        /* Elemento Central Animado en 3D */
-        .loader-3d {
-            width: 90px;
-            height: 90px;
-            margin: 0 auto 45px auto;
-            position: relative;
-            transform-style: preserve-3d;
-            animation: rotate3D 4s linear infinite;
-        }
-
-        .loader-ring {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border: 4px solid transparent;
-            border-radius: 50%;
-        }
-
-        .ring-red {
-            border-top-color: #ff003c;
-            transform: rotateX(60deg) rotateY(30deg);
-            filter: drop-shadow(0 0 15px #ff003c);
-        }
-
-        .ring-blue {
-            border-inline-start-color: #00d2ff;
-            transform: rotateX(30deg) rotateY(60deg);
-            filter: drop-shadow(0 0 15px #00d2ff);
-        }
-
-        /* Botón estilo Cyberpunk con retraso de aparición */
+        /* Botón estilo Cyberpunk con retraso de aparición progresiva */
         .btn-welcome {
             background: transparent;
             color: #ffffff;
@@ -149,7 +138,7 @@
             border-color: #00d2ff;
         }
 
-        /* Filtro CRT Scanlines para monitores retro/hacker */
+        /* Filtro CRT Scanlines para monitores hacker */
         .scanlines {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -173,11 +162,6 @@
             50% { transform: translateY(-10px) rotateX(-4deg) rotateY(4deg); }
         }
 
-        @keyframes rotate3D {
-            0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
-            100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
-        }
-
         @keyframes glitch {
             0%, 20%, 25%, 70%, 75%, 100% { text-shadow: -3px -3px 0 #ff003c, 3px 3px 0 #00d2ff; }
             21% { text-shadow: 5px -1px 0 #ff003c, -5px 2px 0 #00d2ff; }
@@ -193,7 +177,7 @@
             to { opacity: 1; transform: scale(1); }
         }
 
-        /* Mobile Responsive (Ajustado estrictamente a dimensiones Samsung Mobile) */
+        /* Mobile Responsive (Estricto para pantallas Samsung Galaxy / Ultra) */
         @media (max-width: 768px) {
             .logo-title {
                 font-size: 2.4rem;
@@ -201,15 +185,13 @@
             }
             .subtitle {
                 font-size: 0.75rem;
-                margin-bottom: 25px;
+            }
+            .image-3d-container {
+                max-width: 210px;
+                margin-bottom: 20px;
             }
             .typing-text {
                 font-size: 0.95rem;
-            }
-            .loader-3d {
-                width: 75px;
-                height: 75px;
-                margin-bottom: 35px;
             }
             .btn-welcome {
                 padding: 14px 20px;
@@ -227,9 +209,8 @@
         <h1 class="logo-title">Cyber Bane</h1>
         <div class="subtitle">Secure Network &sdot; System Override</div>
 
-        <div class="loader-3d">
-            <div class="loader-ring ring-red"></div>
-            <div class="loader-ring ring-blue"></div>
+        <div class="image-3d-container" id="image3D">
+            <img src="https://i79.servimg.com/u/f79/20/65/01/16/6a889510.jpg" alt="Cyber Bane Hub Image">
         </div>
 
         <div class="typing-container">
@@ -242,9 +223,43 @@
     </div>
 
     <script>
-        // Texto modificado y optimizado con estética Hacker profesional
+        // --- Script Interactividad de Rotación 3D (Mouse/Touch) ---
+        const imageContainer = document.getElementById('image3D');
+        const constrain = 15; // Suavidad de giro
+
+        function transforms(x, y, el) {
+            let box = el.getBoundingClientRect();
+            let calcX = -(y - box.y - (box.height / 2)) / constrain;
+            let calcY = (x - box.x - (box.width / 2)) / constrain;
+            return `rotateX(${calcX}deg) rotateY(${calcY}deg)`;
+        }
+
+        function transformElement(el, xyEl) {
+            el.style.transform = transforms.apply(null, xyEl);
+        }
+
+        // PC Tracking
+        document.onmousemove = function(e) {
+            let xy = [e.clientX, e.clientY];
+            let position = xy.concat([imageContainer]);
+            window.requestAnimationFrame(function() {
+                transformElement(imageContainer, position);
+            });
+        };
+
+        // Mobile Tracking (Toque e interacción táctil)
+        document.ontouchmove = function(e) {
+            let touch = e.touches[0];
+            let xy = [touch.clientX, touch.clientY];
+            let position = xy.concat([imageContainer]);
+            window.requestAnimationFrame(function() {
+                transformElement(imageContainer, position);
+            });
+        };
+
+        // --- Script de Texto Mecanografiado en Vivo ---
         const textToType = "BIENVENID@ A LA CIBERSEGURIDAD: DONDE LOS BLACK HATS NO TIENEN DONDE ESCONDERSE...";
-        const typingSpeed = 40; // Velocidad de escritura en ms
+        const typingSpeed = 40; 
         let index = 0;
 
         function typeEffect() {
@@ -255,17 +270,16 @@
             }
         }
 
-        // Arranca la animación al renderizar la estructura DOM
         window.onload = typeEffect;
 
+        // --- Función de Redirección con Animación ---
         function enterInfra() {
-            // Efecto Matrix Glitch Out antes de salir
             document.body.style.transition = "all 0.5s ease";
             document.body.style.opacity = "0";
             document.body.style.transform = "scale(0.92)";
             
             setTimeout(() => {
-                // Redirección directa hacia inicio.html
+                // Redirección directa hacia el archivo de inicio
                 window.location.href = "inicio.html";
             }, 500);
         }
