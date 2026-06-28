@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cyber Bane - Loading System</title>
+    <style>
+        /* Desactivar scroll y ajustar a pantallas OLED/AMOLED */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Courier New', Courier, monospace;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px; /* Habilita el entorno 3D */
+        }
+
+        /* Contenedor Principal con efecto Glitch y 3D */
+        .container {
+            text-align: center;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: float3D 6s ease-in-out infinite;
+            padding: 20px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        /* Título Principal de la Comunidad */
+        .logo-title {
+            font-size: 3rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: #fff;
+            text-shadow: 
+                -3px -3px 0 #ff003c,  /* Rojo Cyber */
+                 3px  3px 0 #00d2ff; /* Azul Cyber */
+            margin-bottom: 10px;
+            position: relative;
+            animation: glitch 1s linear infinite;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            color: #00d2ff;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+
+        /* Efecto de Cubo/Círculo de Carga 3D */
+        .loader-3d {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 50px auto;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotate3D 4s linear infinite;
+        }
+
+        .loader-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 4px solid transparent;
+            border-radius: 50%;
+        }
+
+        .ring-red {
+            border-top-color: #ff003c;
+            transform: rotateX(60deg) rotateY(30deg);
+            filter: drop-shadow(0 0 15px #ff003c);
+        }
+
+        .ring-blue {
+            border-inline-start-color: #00d2ff;
+            transform: rotateX(30deg) rotateY(60deg);
+            filter: drop-shadow(0 0 15px #00d2ff);
+        }
+
+        /* Botón de Entrada estilo Cyberpunk */
+        .btn-welcome {
+            background: transparent;
+            color: #ffffff;
+            border: 2px solid #ff003c;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            font-family: inherit;
+            cursor: pointer;
+            position: relative;
+            outline: none;
+            overflow: hidden;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 0, 60, 0.2);
+            text-transform: uppercase;
+        }
+
+        .btn-welcome:hover {
+            background: #ff003c;
+            color: #000000;
+            box-shadow: 0 0 25px #ff003c, 0 0 10px #00d2ff;
+            border-color: #00d2ff;
+            text-shadow: none;
+        }
+
+        /* Escaneo de líneas de fondo (Efecto Monitor Antiguo) */
+        .scanlines {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%, 
+                rgba(0, 0, 0, 0.25) 50%
+            ), linear-gradient(
+                90deg, 
+                rgba(255, 0, 0, 0.03), 
+                rgba(0, 210, 255, 0.01), 
+                rgba(0, 0, 255, 0.03)
+            );
+            background-size: 100% 4px, 6px 100%;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        /* ANIMACIONES */
+        @keyframes float3D {
+            0%, 100% { transform: translateY(0) rotateX(5deg) rotateY(-5deg); }
+            50% { transform: translateY(-15px) rotateX(-5deg) rotateY(5deg); }
+        }
+
+        @keyframes rotate3D {
+            0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+            100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: -3px -3px 0 #ff003c, 3px 3px 0 #00d2ff; }
+            20% { text-shadow: -3px -3px 0 #ff003c, 3px 3px 0 #00d2ff; }
+            21% { text-shadow: 5px -1px 0 #ff003c, -5px 2px 0 #00d2ff; }
+            25% { text-shadow: -3px -3px 0 #ff003c, 3px 3px 0 #00d2ff; }
+            70% { text-shadow: -3px -3px 0 #ff003c, 3px 3px 0 #00d2ff; }
+            71% { text-shadow: -4px 3px 0 #ff003c, 4px -3px 0 #00d2ff; }
+            75% { text-shadow: -3px -3px 0 #ff003c, 3px 3px 0 #00d2ff; }
+            100% { text-shadow: -3px -3px 0 #ff003c, 3px 3px 0 #00d2ff; }
+        }
+
+        /* Adaptabilidad para Dispositivos Móviles (Optimizado para pantallas Samsung Galaxy/Note/S Ultra) */
+        @media (max-width: 768px) {
+            .logo-title {
+                font-size: 2.2rem;
+                letter-spacing: 3px;
+            }
+            .subtitle {
+                font-size: 0.75rem;
+                margin-bottom: 30px;
+            }
+            .loader-3d {
+                width: 80px;
+                height: 80px;
+            }
+            .btn-welcome {
+                padding: 12px 24px;
+                font-size: 0.95rem;
+                width: 90%; /* Mejor tap target en pantallas móviles */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="scanlines"></div>
+
+    <div class="container">
+        <h1 class="logo-title">Cyber Bane</h1>
+        <div class="subtitle">Secure Network &sdot; System Override</div>
+
+        <div class="loader-3d">
+            <div class="loader-ring ring-red"></div>
+            <div class="loader-ring ring-blue"></div>
+        </div>
+
+        <button class="btn-welcome" onclick="enterInfra()"><span style="color: #00d2ff;">[</span> BIENVENIDO AL INFRAMUNDO <span style="color: #ff003c;">]</span></button>
+    </div>
+
+    <script>
+        function enterInfra() {
+            // Efecto de sonido o redirección aquí en el futuro
+            alert("Acceso concedido. Inicializando protocolos de Cyber Bane...");
+            
+            // Aquí puedes añadir una transición para desvanecer la pantalla de carga
+            document.body.style.transition = "all 1s ease";
+            document.body.style.opacity = "0";
+            document.body.style.background = "#ff003c";
+        }
+    </script>
+</body>
+</html>
