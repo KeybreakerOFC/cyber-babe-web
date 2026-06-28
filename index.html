@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Cyber Bane - Loading System</title>
     <style>
-        /* Desactivar scroll y ajustar a pantallas OLED/AMOLED */
+        /* Desactivar scroll y ajustar a pantallas OLED/AMOLED de Samsung */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -23,10 +23,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            perspective: 1000px; /* Habilita el entorno 3D */
+            perspective: 1000px; /* Entorno 3D */
         }
 
-        /* Contenedor Principal con efecto Glitch y 3D */
+        /* Contenedor Principal con efecto Flotante 3D */
         .container {
             text-align: center;
             position: relative;
@@ -34,12 +34,12 @@
             animation: float3D 6s ease-in-out infinite;
             padding: 20px;
             width: 100%;
-            max-width: 500px;
+            max-width: 600px;
         }
 
-        /* Título Principal de la Comunidad */
+        /* Título Principal Cyber Bane */
         .logo-title {
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 5px;
@@ -47,7 +47,7 @@
             text-shadow: 
                 -3px -3px 0 #ff003c,  /* Rojo Cyber */
                  3px  3px 0 #00d2ff; /* Azul Cyber */
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             position: relative;
             animation: glitch 1s linear infinite;
         }
@@ -56,16 +56,44 @@
             font-size: 0.9rem;
             color: #00d2ff;
             letter-spacing: 2px;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             text-transform: uppercase;
             opacity: 0.8;
         }
 
-        /* Efecto de Cubo/Círculo de Carga 3D */
+        /* Contenedor del Efecto de Escritura en Vivo */
+        .typing-container {
+            min-height: 55px; /* Evita saltos de línea bruscos en el layout */
+            margin-bottom: 40px;
+            padding: 0 10px;
+        }
+
+        .typing-text {
+            font-size: 1.1rem;
+            color: #ffffff;
+            letter-spacing: 1px;
+            line-height: 1.5;
+            display: inline;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
+        }
+
+        /* Cursor de consola parpadeante */
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 18px;
+            background-color: #ff003c;
+            margin-left: 5px;
+            animation: blink 0.7s infinite;
+            vertical-align: middle;
+            box-shadow: 0 0 8px #ff003c;
+        }
+
+        /* Elemento Central Animado en 3D */
         .loader-3d {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 50px auto;
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 45px auto;
             position: relative;
             transform-style: preserve-3d;
             animation: rotate3D 4s linear infinite;
@@ -91,7 +119,7 @@
             filter: drop-shadow(0 0 15px #00d2ff);
         }
 
-        /* Botón de Entrada estilo Cyberpunk */
+        /* Botón estilo Cyberpunk con retraso de aparición */
         .btn-welcome {
             background: transparent;
             color: #ffffff;
@@ -108,6 +136,10 @@
             transition: all 0.3s ease;
             box-shadow: 0 0 15px rgba(255, 0, 60, 0.2);
             text-transform: uppercase;
+            opacity: 0;
+            transform: scale(0.9);
+            animation: fadeInBtn 1s ease forwards;
+            animation-delay: 2.8s; /* Aparece de forma fluida mientras termina de escribir */
         }
 
         .btn-welcome:hover {
@@ -115,10 +147,9 @@
             color: #000000;
             box-shadow: 0 0 25px #ff003c, 0 0 10px #00d2ff;
             border-color: #00d2ff;
-            text-shadow: none;
         }
 
-        /* Escaneo de líneas de fondo (Efecto Monitor Antiguo) */
+        /* Filtro CRT Scanlines para monitores retro/hacker */
         .scanlines {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -136,10 +167,10 @@
             pointer-events: none;
         }
 
-        /* ANIMACIONES */
+        /* KEYFRAMES */
         @keyframes float3D {
-            0%, 100% { transform: translateY(0) rotateX(5deg) rotateY(-5deg); }
-            50% { transform: translateY(-15px) rotateX(-5deg) rotateY(5deg); }
+            0%, 100% { transform: translateY(0) rotateX(4deg) rotateY(-4deg); }
+            50% { transform: translateY(-10px) rotateX(-4deg) rotateY(4deg); }
         }
 
         @keyframes rotate3D {
@@ -148,34 +179,42 @@
         }
 
         @keyframes glitch {
-            0% { text-shadow: -3px -3px 0 #ff003c, 3px 3px 0 #00d2ff; }
-            20% { text-shadow: -3px -3px 0 #ff003c, 3px 3px 0 #00d2ff; }
+            0%, 20%, 25%, 70%, 75%, 100% { text-shadow: -3px -3px 0 #ff003c, 3px 3px 0 #00d2ff; }
             21% { text-shadow: 5px -1px 0 #ff003c, -5px 2px 0 #00d2ff; }
-            25% { text-shadow: -3px -3px 0 #ff003c, 3px 3px 0 #00d2ff; }
-            70% { text-shadow: -3px -3px 0 #ff003c, 3px 3px 0 #00d2ff; }
             71% { text-shadow: -4px 3px 0 #ff003c, 4px -3px 0 #00d2ff; }
-            75% { text-shadow: -3px -3px 0 #ff003c, 3px 3px 0 #00d2ff; }
-            100% { text-shadow: -3px -3px 0 #ff003c, 3px 3px 0 #00d2ff; }
         }
 
-        /* Adaptabilidad para Dispositivos Móviles (Optimizado para pantallas Samsung Galaxy/Note/S Ultra) */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        @keyframes fadeInBtn {
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Mobile Responsive (Ajustado estrictamente a dimensiones Samsung Mobile) */
         @media (max-width: 768px) {
             .logo-title {
-                font-size: 2.2rem;
+                font-size: 2.4rem;
                 letter-spacing: 3px;
             }
             .subtitle {
                 font-size: 0.75rem;
-                margin-bottom: 30px;
+                margin-bottom: 25px;
+            }
+            .typing-text {
+                font-size: 0.95rem;
             }
             .loader-3d {
-                width: 80px;
-                height: 80px;
+                width: 75px;
+                height: 75px;
+                margin-bottom: 35px;
             }
             .btn-welcome {
-                padding: 12px 24px;
+                padding: 14px 20px;
                 font-size: 0.95rem;
-                width: 90%; /* Mejor tap target en pantallas móviles */
+                width: 95%;
             }
         }
     </style>
@@ -193,18 +232,42 @@
             <div class="loader-ring ring-blue"></div>
         </div>
 
-        <button class="btn-welcome" onclick="enterInfra()"><span style="color: #00d2ff;">[</span> BIENVENIDO AL INFRAMUNDO <span style="color: #ff003c;">]</span></button>
+        <div class="typing-container">
+            <span class="typing-text" id="typewriter"></span><span class="cursor"></span>
+        </div>
+
+        <button class="btn-welcome" onclick="enterInfra()">
+            <span style="color: #00d2ff;">[</span> BIENVENIDO AL INFRAMUNDO <span style="color: #ff003c;">]</span>
+        </button>
     </div>
 
     <script>
+        // Texto modificado y optimizado con estética Hacker profesional
+        const textToType = "BIENVENID@ A LA CIBERSEGURIDAD: DONDE LOS BLACK HATS NO TIENEN DONDE ESCONDERSE...";
+        const typingSpeed = 40; // Velocidad de escritura en ms
+        let index = 0;
+
+        function typeEffect() {
+            if (index < textToType.length) {
+                document.getElementById("typewriter").innerHTML += textToType.charAt(index);
+                index++;
+                setTimeout(typeEffect, typingSpeed);
+            }
+        }
+
+        // Arranca la animación al renderizar la estructura DOM
+        window.onload = typeEffect;
+
         function enterInfra() {
-            // Efecto de sonido o redirección aquí en el futuro
-            alert("Acceso concedido. Inicializando protocolos de Cyber Bane...");
-            
-            // Aquí puedes añadir una transición para desvanecer la pantalla de carga
-            document.body.style.transition = "all 1s ease";
+            // Efecto Matrix Glitch Out antes de salir
+            document.body.style.transition = "all 0.5s ease";
             document.body.style.opacity = "0";
-            document.body.style.background = "#ff003c";
+            document.body.style.transform = "scale(0.92)";
+            
+            setTimeout(() => {
+                // Redirección directa hacia inicio.html
+                window.location.href = "inicio.html";
+            }, 500);
         }
     </script>
 </body>
